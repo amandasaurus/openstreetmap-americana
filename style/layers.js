@@ -33,5 +33,7 @@ var americanaLayers = [
   layerMotorwayExit,
   layerTrunkExit,
 
-  layerHighwayShieldInterstate
+  layerHighwayShieldInterstate,
+  layerHighwayShieldUS,
+  layerHighwayShieldState
 ];
