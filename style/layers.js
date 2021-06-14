@@ -14,6 +14,8 @@ var americanaLayers = [
   layerTunnelOnewayLink,
 
   layerMotorwayCasing,
+  layerTrunkCasing,
+
   layerMotorwayLinkCasing,
   layerMotorway,
   layerMotorwayLink,

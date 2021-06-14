@@ -54,3 +54,31 @@ var layerMotorwayLinkCasing = {
   metadata: {},
   "source-layer": "transportation",
 };
+
+var layerTrunkCasing = {
+  id: "road_trunk_casing",
+  type: "line",
+  paint: {
+    "line-color": "#000",
+    "line-width": {
+      base: 1.2,
+      stops: [
+        [5, 0.2],
+        [6, 0.6],
+        [7, 0.9],
+        [20, 11],
+      ],
+    },
+  },
+  filter: [
+    "all",
+    ["==", "class", "trunk"],
+    ["!=", "ramp", 1],
+  ],
+  layout: layoutRoadCasing,
+  source: "openmaptiles",
+  minzoom: 6,
+  metadata: {},
+  "source-layer": "transportation",
+};
+
