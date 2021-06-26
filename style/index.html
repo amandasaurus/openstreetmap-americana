@@ -60,13 +60,11 @@
         bearing: 0,
         sources: {
           openmaptiles: {
-            url:
-              "https://api.maptiler.com/tiles/v3/tiles.json?key=" + mapTilerKey,
+            url: "http://localhost:8080/data/v3.json", // "https://api.maptiler.com/tiles/v3/tiles.json?key=" + mapTilerKey,
             type: "vector",
           },
           openmaptiles_test: {
-            url:
-              "http://localhost:8080/data/v3.json",
+            url: "http://localhost:8080/data/v3.json",
             type: "vector",
           },
           maptiler_attribution: {
@@ -91,6 +89,126 @@
         style: style,
         center: [-74.5, 40], // starting position [lng, lat]
         zoom: 8, // starting zoom
+      });
+
+      function loadShield(ctx, shield) {
+        var imgData = ctx.createImageData(
+          shield.data.width,
+          shield.data.height
+        );
+        for (i = 0; i < shield.data.data.length; i++) {
+          imgData.data[i] = shield.data.data[i];
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+
+      map.on("styleimagemissing", function (e) {
+        var id = e.id;
+
+        if (id == "shield_") {
+          return;
+        }
+
+        var network_ref = id.split("_")[1];
+        var network_ref_parts = network_ref.split("=");
+        var network = network_ref_parts[0];
+        var ref = network_ref_parts[1];
+
+        var width = 20;
+        var height = 20;
+        var scaleH = 1;
+        var scaleW = 1;
+
+        var c = document.createElement("canvas");
+        var ctx = c.getContext("2d");
+        ctx.imageSmoothingQuality = "high";
+        ctx.mozImageSmoothingEnabled = true;
+        ctx.webkitImageSmoothingEnabled = true;
+        ctx.msImageSmoothingEnabled = true;
+        ctx.imageSmoothingEnabled = true;
+
+        var shieldImages = map.style.imageManager.images;
+        switch (network) {
+          case "US:I":
+            {
+              var shield = shieldImages.shield40_us_interstate;
+              scaleH = shield.data.height / height;
+              scaleW = shield.data.width / width;
+              loadShield(ctx, shield);
+
+              ctx.fillStyle = "white";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              if (ref.length <= 2) {
+                ctx.font = "bold 44pt Arial";
+              } else {
+                ctx.font = "bold 30pt Arial";
+              }
+              ctx.fillText(
+                ref,
+                height * scaleH * 0.5,
+                width * scaleW * 0.56,
+                width * scaleW
+              );
+            }
+            break;
+          case "US:US":
+            {
+              var shield = shieldImages.shield40_us_us;
+              scaleW = shield.data.width / width;
+              scaleH = shield.data.height / height;
+
+              loadShield(ctx, shield);
+
+              ctx.fillStyle = "black";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              if (ref.length <= 2) {
+                ctx.font = "bold 42pt Arial";
+              } else {
+                ctx.font = "bold 28pt Arial";
+              }
+              ctx.fillText(
+                ref,
+                width * scaleW * 0.5,
+                height * scaleH * 0.56,
+                width * scaleW
+              );
+            }
+            break;
+
+          default: {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, 20, 20);
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 20, 20);
+
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            if (ref.length <= 2) {
+              ctx.font = "bold 11pt Arial";
+            } else {
+              ctx.font = "bold 7pt Arial";
+            }
+            ctx.fillText(ref, width * 0.5, height * 0.58, width);
+          }
+        }
+
+        var scaleCanvas = document.createElement("canvas");
+        var scaleCtx = scaleCanvas.getContext("2d");
+        scaleCtx.scale(1 / scaleW, 1 / scaleH);
+        scaleCtx.drawImage(c, 0, 0);
+
+        var imgData = scaleCtx.getImageData(0, 0, height, width);
+
+        map.addImage(id, {
+          width: width,
+          height: width,
+          data: imgData.data,
+        });
+
+        console.log(id);
       });
     </script>
   </body>
