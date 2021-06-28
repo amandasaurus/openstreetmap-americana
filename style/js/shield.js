@@ -25,8 +25,8 @@ function initShields(map) {
   shields["US:US"] = {
     backgroundImage: shieldImages.shield40_us_us,
     textColor: "black",
-    font2: "bold 44pt Arial",
-    font3: "bold 30pt Arial",
+    font2: "bold 40pt Arial",
+    font3: "bold 26pt Arial",
     textX: 0.5,
     textY: 0.56,
   };
@@ -39,6 +39,24 @@ function initShields(map) {
     textX: 0.5,
     textY: 0.56,
     colorLighten: "#613214",
+  };
+
+  shields["US:PA"] = {
+    backgroundImage: shieldImages.shield40_us_pa,
+    textColor: "black",
+    font2: "bold 40pt Arial",
+    font3: "bold 28pt Arial",
+    textX: 0.5,
+    textY: 0.6,
+  };
+
+  shields["US:PA:Turnpike"] = {
+    backgroundImage: shieldImages.shield40_us_pa_turnpike,
+    textColor: "white",
+    font2: "bold 44pt Arial",
+    font3: "bold 30pt Arial",
+    textX: 0.5,
+    textY: 0.56,
   };
 }
 
@@ -80,6 +98,10 @@ function missingIconLoader(map, e) {
     scaleH = shield.data.height / height;
     colorLighten = shieldDef.colorLighten;
 
+    if(network == "US:PA:Turnpike" && ref == "") {
+      shield=shieldImages.shield40_us_pa_turnpike_noref;
+    }
+
     loadShield(ctx, shield);
 
     ctx.fillStyle = shieldDef.textColor;
@@ -96,6 +118,8 @@ function missingIconLoader(map, e) {
       height * scaleH * shieldDef.textY,
       width * scaleW
     );
+  } else if (ref=="") {
+    return;
   } else {
     switch (network) {
       default: {
@@ -121,9 +145,6 @@ function missingIconLoader(map, e) {
   var scaleCtx = scaleCanvas.getContext("2d");
   scaleCtx.scale(1 / scaleW, 1 / scaleH);
   scaleCtx.drawImage(c, 0, 0);
-
-  console.log(network);
-  console.log(colorLighten);
 
   if (colorLighten != null) {
     scaleCtx.globalCompositeOperation = "lighten";
