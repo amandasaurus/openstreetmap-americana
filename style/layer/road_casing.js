@@ -70,15 +70,10 @@ var layerTrunkCasing = {
       ],
     },
   },
-  filter: [
-    "all",
-    ["==", "class", "trunk"],
-    ["!=", "ramp", 1],
-  ],
+  filter: ["all", ["==", "class", "trunk"], ["!=", "ramp", 1]],
   layout: layoutRoadCasing,
   source: "openmaptiles",
   minzoom: 6,
   metadata: {},
   "source-layer": "transportation",
 };
-

@@ -53,10 +53,14 @@ function initShields(map) {
   shields["US:PA:Turnpike"] = {
     backgroundImage: shieldImages.shield40_us_pa_turnpike,
     textColor: "white",
-    font2: "bold 44pt Arial",
-    font3: "bold 30pt Arial",
+    font2: "bold 32pt Arial",
+    font3: "bold 22pt Arial",
     textX: 0.5,
     textY: 0.56,
+  };
+
+  shields["US:PA:Belt"] = {
+    notext: true,
   };
 }
 
@@ -94,31 +98,48 @@ function missingIconLoader(map, e) {
   if (shields[network] != null) {
     var shieldDef = shields[network];
     var shield = shieldDef.backgroundImage;
-    scaleW = shield.data.width / width;
-    scaleH = shield.data.height / height;
     colorLighten = shieldDef.colorLighten;
 
-    if(network == "US:PA:Turnpike" && ref == "") {
-      shield=shieldImages.shield40_us_pa_turnpike_noref;
+    if (network == "US:PA:Turnpike" && ref == "") {
+      shield = shieldImages.shield40_us_pa_turnpike_noref;
     }
+
+    if (network == "US:PA:Belt") {
+      switch (ref) {
+        case "Red Belt":
+        default:
+          shield = shieldImages.shield40_us_pa_belt_red_2;
+          break;
+      }
+    }
+
+    if (shield == null) {
+      console.log("No shield defined for: " + network + "=" + ref);
+      return;
+    }
+
+    scaleW = shield.data.width / width;
+    scaleH = shield.data.height / height;
 
     loadShield(ctx, shield);
 
-    ctx.fillStyle = shieldDef.textColor;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    if (ref.length <= 2) {
-      ctx.font = shieldDef.font2;
-    } else {
-      ctx.font = shieldDef.font3;
+    if (shieldDef.notext != true) {
+      ctx.fillStyle = shieldDef.textColor;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      if (ref.length <= 2) {
+        ctx.font = shieldDef.font2;
+      } else {
+        ctx.font = shieldDef.font3;
+      }
+      ctx.fillText(
+        ref,
+        width * scaleW * shieldDef.textX,
+        height * scaleH * shieldDef.textY,
+        width * scaleW
+      );
     }
-    ctx.fillText(
-      ref,
-      width * scaleW * shieldDef.textX,
-      height * scaleH * shieldDef.textY,
-      width * scaleW
-    );
-  } else if (ref=="") {
+  } else if (ref == "") {
     return;
   } else {
     switch (network) {
