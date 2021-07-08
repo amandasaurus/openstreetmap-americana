@@ -5,7 +5,7 @@ var layerMotorwayExit = {
     "text-color": "rgba(30, 30, 30, 1)",
     "text-halo-color": "rgba(255, 255, 255, 1)",
     "text-halo-width": 2,
-    "text-halo-blur": 1.0
+    "text-halo-blur": 1.0,
   },
   filter: [
     "all",
@@ -37,11 +37,7 @@ var layerMotorwayExit = {
 var layerTrunkExit = {
   id: "trunk-highway-exit",
   type: "symbol",
-  filter: [
-    "all",
-    ["==", "class", "trunk"],
-    ["==", "subclass", "junction"]
-  ],
+  filter: ["all", ["==", "class", "trunk"], ["==", "subclass", "junction"]],
   layout: {
     "icon-size": 0.5,
     "icon-image": "diamond",

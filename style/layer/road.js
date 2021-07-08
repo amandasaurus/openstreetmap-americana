@@ -62,7 +62,7 @@ var layerMotorwayLabel = {
     "text-halo-blur": 0.5,
     "text-halo-width": 1,
   },
-  filter: ["all", ["==", "class", "motorway"]],
+//  filter: ["all", ["==", "class", "motorway"]],
   layout: {
     "text-font": ["Metropolis Light"],
     "text-size": 20,
