@@ -30,4 +30,14 @@ var americanaLayers = [
   layerBridgeOnewayLink,
 
   layerMotorwayLabel,
+
+  layerHighwayShieldInterstate,
+
+  layerPlaceCity,
+  layerPlaceState,
+  layerPlaceCountryOther,
+  layerPlaceCountry3,
+  layerPlaceCountry2,
+  layerPlaceCountry1,
+  layerPlaceContinent,
 ];
