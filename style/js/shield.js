@@ -40,8 +40,8 @@ function initShields(map) {
     padding: {
       left: 10,
       right: 10,
-      top: 0,
-      bottom: 10,
+      top: 10,
+      bottom: 20,
     },
   };
 
@@ -201,8 +201,8 @@ function missingIconLoader(map, e) {
         drawShieldText(c, ctx, ref, {
           left: 5,
           right: 5,
-          top: 5,
-          bottom: 5,
+          top: 10,
+          bottom: 15,
         });
       }
     }
