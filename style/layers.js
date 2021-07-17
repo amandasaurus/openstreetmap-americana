@@ -40,8 +40,6 @@ for (let i = 1; i <= 5; i++) {
 americanaLayers.push(
   layerMotorwayLabel,
 
-  layerHighwayShieldInterstate,
-
   layerPlaceCity,
   layerPlaceState,
   layerPlaceCountryOther,

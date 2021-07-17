@@ -1,7 +1,10 @@
-clean:
-	rm -rf sprites build
+clean_sprites:
+	rm -rf sprites
 
-sprites:
+clean: clean_sprites
+	rm -rf build
+
+sprites: clean_sprites
 	mkdir -p sprites
 	npx spritezero sprites/sprite@2x icons/ --retina
 	npx spritezero sprites/sprite icons/

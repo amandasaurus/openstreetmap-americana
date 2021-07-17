@@ -62,7 +62,6 @@ var layerMotorwayLabel = {
     "text-halo-blur": 0.5,
     "text-halo-width": 1,
   },
-//  filter: ["all", ["==", "class", "motorway"]],
   layout: {
     "text-font": ["Metropolis Light"],
     "text-size": 20,
@@ -70,61 +69,43 @@ var layerMotorwayLabel = {
       "format",
       [
         "case",
-        ["!=", ["get", "ref_1"], null],
-        [
-          "image",
-          ["concat", "shield_", ["get", "network_1"], "=", ["get", "ref_1"]],
-        ],
+        ["!=", ["get", "route_1"], null],
+        ["image", ["concat", "shield_", ["get", "route_1"]]],
         ["literal", ""],
       ],
       " ",
       [
         "case",
-        ["!=", ["get", "ref_2"], null],
-        [
-          "image",
-          ["concat", "shield_", ["get", "network_2"], "=", ["get", "ref_2"]],
-        ],
+        ["!=", ["get", "route_2"], null],
+        ["image", ["concat", "shield_", ["get", "route_2"]]],
         ["literal", ""],
       ],
       " ",
       [
         "case",
-        ["!=", ["get", "ref_3"], null],
-        [
-          "image",
-          ["concat", "shield_", ["get", "network_3"], "=", ["get", "ref_3"]],
-        ],
+        ["!=", ["get", "route_3"], null],
+        ["image", ["concat", "shield_", ["get", "route_3"]]],
         ["literal", ""],
       ],
       " ",
       [
         "case",
-        ["!=", ["get", "ref_4"], null],
-        [
-          "image",
-          ["concat", "shield_", ["get", "network_4"], "=", ["get", "ref_4"]],
-        ],
+        ["!=", ["get", "route_4"], null],
+        ["image", ["concat", "shield_", ["get", "route_4"]]],
         ["literal", ""],
       ],
       " ",
       [
         "case",
-        ["!=", ["get", "ref_5"], null],
-        [
-          "image",
-          ["concat", "shield_", ["get", "network_5"], "=", ["get", "ref_5"]],
-        ],
+        ["!=", ["get", "route_5"], null],
+        ["image", ["concat", "shield_", ["get", "route_5"]]],
         ["literal", ""],
       ],
       " ",
       [
         "case",
-        ["!=", ["get", "ref_6"], null],
-        [
-          "image",
-          ["concat", "shield_", ["get", "network_5"], "=", ["get", "ref_6"]],
-        ],
+        ["!=", ["get", "route_6"], null],
+        ["image", ["concat", "shield_", ["get", "route_5"]]],
         ["literal", ""],
       ],
     ],
@@ -133,5 +114,5 @@ var layerMotorwayLabel = {
   },
   source: "openmaptiles",
   metadata: {},
-  "source-layer": "transportation_ref",
+  "source-layer": "transportation_name",
 };
