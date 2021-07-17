@@ -105,7 +105,7 @@ var layerMotorwayLabel = {
       [
         "case",
         ["!=", ["get", "route_6"], null],
-        ["image", ["concat", "shield_", ["get", "route_5"]]],
+        ["image", ["concat", "shield_", ["get", "route_6"]]],
         ["literal", ""],
       ],
     ],
