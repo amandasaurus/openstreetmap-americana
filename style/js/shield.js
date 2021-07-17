@@ -1,5 +1,4 @@
 function loadShield(ctx, shield) {
-
   var scaleCanvas = document.createElement("canvas");
   var scaleCtx = scaleCanvas.getContext("2d");
   var imgData = scaleCtx.createImageData(shield.data.width, shield.data.height);
@@ -9,12 +8,12 @@ function loadShield(ctx, shield) {
   }
   scaleCtx.putImageData(imgData, 0, 0);
 
-  var scaleW = 80/shield.data.width;
-  var scaleH = 80/shield.data.height;
+  var scaleW = 80 / shield.data.width;
+  var scaleH = 80 / shield.data.height;
 
-  ctx.scale(scaleW,scaleH);
+  ctx.scale(scaleW, scaleH);
   ctx.drawImage(scaleCanvas, 0, 0);
-  ctx.scale(1/scaleW,1/scaleH);
+  ctx.scale(1 / scaleW, 1 / scaleH);
 }
 
 var shields = {};
@@ -31,7 +30,7 @@ function initShields(map) {
       left: 10,
       right: 10,
       top: 1,
-      bottom: 3
+      bottom: 3,
     },
   };
 
@@ -42,7 +41,7 @@ function initShields(map) {
       left: 10,
       right: 10,
       top: 0,
-      bottom: 10
+      bottom: 10,
     },
   };
 
@@ -53,7 +52,7 @@ function initShields(map) {
       left: 10,
       right: 10,
       top: 0,
-      bottom: 10
+      bottom: 10,
     },
     colorLighten: "#613214",
   };
@@ -65,7 +64,7 @@ function initShields(map) {
       left: 10,
       right: 10,
       top: 0,
-      bottom: 10
+      bottom: 10,
     },
   };
 
@@ -76,7 +75,7 @@ function initShields(map) {
       left: 10,
       right: 10,
       top: 0,
-      bottom: 10
+      bottom: 10,
     },
   };
 
@@ -85,8 +84,41 @@ function initShields(map) {
   };
 }
 
-function missingIconLoader(map, e) {
+function drawShieldText(c, ctx, ref, padding) {
+  var padding = padding || {};
+  var padTop = padding.top || 0;
+  var padBot = padding.bottom || 0;
+  var padLeft = padding.left || 0;
+  var padRight = padding.right || 0;
 
+  var metrics = ctx.measureText(ref);
+  var textWidth = metrics.width;
+  var textHeight =
+    metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+
+  var desiredWidth = c.width - padLeft - padRight;
+  var scaleWidth = desiredWidth / textWidth;
+
+  var desiredHeight = c.height - padTop - padBot;
+  var scaleHeight = desiredHeight / textHeight;
+  var desiredRenderHeight = (c.height - padTop - padBot) / scaleHeight;
+  scaleHeight = Math.min(scaleWidth, scaleHeight);
+
+  var renderHeight = desiredHeight / scaleHeight;
+
+  var vBaselineOffset = (desiredRenderHeight - renderHeight) / 2;
+
+  ctx.scale(scaleWidth, scaleHeight);
+  ctx.fillText(
+    ref,
+    (padLeft + 0.5 * desiredWidth) / scaleWidth,
+    padTop / scaleHeight - vBaselineOffset,
+    80
+  );
+  ctx.scale(1 / scaleWidth, 1 / scaleHeight);
+}
+
+function missingIconLoader(map, e) {
   console.log("LOADING");
 
   var id = e.id;
@@ -113,8 +145,8 @@ function missingIconLoader(map, e) {
   c.width = 80;
   c.height = 80;
 
-  var scaleH = height/c.height;
-  var scaleW = width/c.width;
+  var scaleH = height / c.height;
+  var scaleW = width / c.width;
 
   var ctx = c.getContext("2d");
   ctx.imageSmoothingQuality = "high";
@@ -153,37 +185,7 @@ function missingIconLoader(map, e) {
 
     if (shieldDef.notext != true) {
       ctx.fillStyle = shieldDef.textColor;
-
-      var padding = shieldDef.padding || {};
-      var padTop = padding.top || 0;
-      var padBot = padding.bottom || 0;
-      var padLeft = padding.left || 0;
-      var padRight = padding.right || 0;
-
-      var metrics = ctx.measureText(ref);
-      var textWidth = metrics.width;
-      var textHeight =
-          metrics.actualBoundingBoxAscent+
-          metrics.actualBoundingBoxDescent;
-
-      var desiredWidth = c.width-padLeft-padRight;
-      var scaleWidth = desiredWidth/textWidth;
-
-      var desiredHeight = c.height-padTop-padBot;
-      var scaleHeight = desiredHeight/textHeight;
-      var desiredRenderHeight = (c.height-padTop-padBot)/scaleHeight;
-      scaleHeight = Math.min(scaleWidth,scaleHeight);
-
-      var renderHeight = desiredHeight/scaleHeight;
-
-      var vBaselineOffset = (desiredRenderHeight - renderHeight) / 2;
-
-      ctx.scale(scaleWidth, scaleHeight);
-      ctx.fillText(ref,
-          (padLeft + 0.5*desiredWidth)/scaleWidth,
-          (padTop)/scaleHeight -vBaselineOffset,
-          80);
-      ctx.scale(1/scaleWidth, 1/scaleHeight);
+      drawShieldText(c, ctx, ref, shieldDef.padding);
     }
   } else if (ref == "") {
     return;
@@ -195,7 +197,13 @@ function missingIconLoader(map, e) {
         ctx.lineWidth = 8;
         ctx.strokeStyle = "black";
         ctx.strokeRect(0, 0, 80, 80);
-//        ctx.fillText(ref, width * 0.5, height * 0.58, width);
+        ctx.fillStyle = "black";
+        drawShieldText(c, ctx, ref, {
+          left: 5,
+          right: 5,
+          top: 5,
+          bottom: 5,
+        });
       }
     }
   }
