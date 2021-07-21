@@ -24,6 +24,12 @@
         bottom: 0;
         width: 100%;
       }
+      #map-tiler-logo {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 100;
+      }
     </style>
 
     <script type="text/javascript" src="js/shield.js"></script>
@@ -52,7 +58,26 @@
 
   <body>
     <div id="map"></div>
+    <a id="map-tiler-logo" href="https://www.maptiler.com/"
+      ><img
+        src="https://api.maptiler.com/resources/logo.svg"
+        alt="MapTiler logo"
+    /></a>
+    <a href="https://github.com/ZeLonewolf/openstreetmap-americana/"
+      ><img
+        loading="lazy"
+        width="149"
+        height="149"
+        src="https://github.blog/wp-content/uploads/2008/12/forkme_right_green_007200.png?resize=149%2C149"
+        class="attachment-full size-full"
+        alt="Fork me on GitHub"
+        data-recalc-dims="1"
+        style="position: absolute; top: 0; right: 0; border: 0; z-index: 100"
+    /></a>
     <script>
+      var getUrl = window.location;
+      var baseUrl = getUrl.protocol + "//" + getUrl.host + getUrl.pathname;
+
       var style = {
         id: "streets",
         name: "Americana",
@@ -61,7 +86,7 @@
         center: [0, 0],
         glyphs: "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
         layers: americanaLayers,
-        sprite: new URL("sprites/sprite", window.location.origin).href,
+        sprite: new URL("sprites/sprite", baseUrl).href,
         bearing: 0,
         sources: {
           openmaptiles: {
@@ -71,11 +96,6 @@
           openmaptiles_test: {
             url: "http://localhost:8080/data/v3.json",
             type: "vector",
-          },
-          maptiler_attribution: {
-            type: "vector",
-            attribution:
-              '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
           },
         },
         version: 8,
@@ -94,11 +114,19 @@
         style: style,
         center: [-74.5, 40], // starting position [lng, lat]
         zoom: 8, // starting zoom
+        attributionControl: false,
       });
 
       map.on("styleimagemissing", function (e) {
         missingIconLoader(map, e);
       });
+
+      map.addControl(
+        new maplibregl.AttributionControl({
+          customAttribution:
+            '<a href="https://openmaptiles.org/" target="_blank">&copy; OpenMapTiles</a> <a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+        })
+      );
     </script>
   </body>
 </html>
